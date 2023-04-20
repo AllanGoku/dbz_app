@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:dbz_app/User.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,14 +24,13 @@ class PageConnexion extends StatelessWidget {
     } else {
       final SharedPreferences prefs = await _prefs;
       provider = await UserProvider.instance;
-      User user = User(_mail.text, _password.text);
       Future<User?> recherche = provider!.rechercheUserParMail(_mail.text);
       recherche.then((users) {
         String? mail;
         String? password;
         if (users != null) {
-          mail = users!.mail;
-          password = users!.password;
+          mail = users.mail;
+          password = users.password;
         }
         if (mail == null) {
           showDialog(
@@ -72,7 +68,7 @@ class PageConnexion extends StatelessWidget {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: Text('Erreur'),
-                    content: Text('Adresse mail ou mot de passe incorrect 2 !'),
+                    content: Text('Adresse mail ou mot de passe incorrect !'),
                   );
                 });
           }

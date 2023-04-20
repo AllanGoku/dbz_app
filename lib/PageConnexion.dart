@@ -2,14 +2,39 @@ import 'package:dbz_app/User.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PageConnexion extends StatelessWidget {
+class PageConnexion extends StatefulWidget {
   PageConnexion({super.key});
 
+  @override
+  _PageConnexionState createState() => _PageConnexionState();
+}
+
+class _PageConnexionState extends State<PageConnexion> {
   TextEditingController _mail = TextEditingController();
   TextEditingController _password = TextEditingController();
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   UserProvider? provider;
   User? userRecup;
+  bool boutonConnexion = false;
+
+  void initState() {
+    super.initState();
+  }
+
+  void _activerBouton() {
+    setState(() {
+      if (_mail.text == "" || _password.text == "") {
+        boutonConnexion = false;
+      } else {
+        if (RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_mail.text) ==
+            false) {
+          boutonConnexion = false;
+        } else {
+          boutonConnexion = true;
+        }
+      }
+    });
+  }
 
   Future<void> _connexion(context) async {
     if (_mail.text == "" && _password.text == "") {
@@ -60,9 +85,7 @@ class PageConnexion extends StatelessWidget {
                     ],
                   );
                 });
-
-          }
-          else{
+          } else {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -97,6 +120,22 @@ class PageConnexion extends StatelessWidget {
                   border: OutlineInputBorder(),
                   labelText: 'Adresse mail',
                 ),
+                onChanged: (value) {
+                  setState(() {
+                    _activerBouton();
+                  });
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Veuillez entrer une adresse email';
+                  } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                      .hasMatch(value)) {
+                    return 'Entrez une adresse email valide';
+                  } else {
+                    return null;
+                  }
+                },
               ),
               Padding(
                 padding: const EdgeInsets.all(2.5),
@@ -110,14 +149,30 @@ class PageConnexion extends StatelessWidget {
                   border: OutlineInputBorder(),
                   labelText: 'Mot de passe',
                 ),
+                onChanged: (value) {
+                  setState(() {
+                    _activerBouton();
+                  });
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Veuillez entrer votre mot de passe';
+                  }
+                },
               ),
               Padding(
                 padding: const EdgeInsets.all(3.5),
               ),
               ElevatedButton(
                   onPressed: () {
-                    _connexion(context);
+                    if (boutonConnexion) {
+                      _connexion(context);
+                    }
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: boutonConnexion == false ? Colors.grey : Colors.green,
+                  ),
                   child: Text("Se connecter")),
               Padding(
                 padding: const EdgeInsets.all(3.5),

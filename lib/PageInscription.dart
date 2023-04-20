@@ -2,14 +2,34 @@ import 'package:dbz_app/User.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:sqflite/sqflite.dart';
-
-class PageInscription extends StatelessWidget {
+class PageInscription extends StatefulWidget {
   PageInscription({super.key});
 
+  @override
+  _PageInscriptionState createState() => _PageInscriptionState();
+
+}
+class _PageInscriptionState extends State<PageInscription> {
   TextEditingController _mail = TextEditingController();
   TextEditingController _password = TextEditingController();
   UserProvider? provider;
+  bool boutonConnexion = false;
+
+
+  void _activerBouton() {
+    setState(() {
+      if (_mail.text == "" || _password.text == "") {
+        boutonConnexion = false;
+      } else {
+        if (RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_mail.text) ==
+            false) {
+          boutonConnexion = false;
+        } else {
+          boutonConnexion = true;
+        }
+      }
+    });
+  }
 
   void _inscription(context) async {
     if (_mail.text == "" && _password.text == "") {
@@ -28,7 +48,7 @@ class PageInscription extends StatelessWidget {
       recherche.then((users) {
         String? mail;
         if (users != null) {
-          mail = users?.mail;
+          mail = users.mail;
         }
         if (mail != null) {
           showDialog(
@@ -126,6 +146,25 @@ class PageInscription extends StatelessWidget {
                   border: OutlineInputBorder(),
                   labelText: 'Adresse mail',
                 ),
+                onEditingComplete: () {
+                  _activerBouton();
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _activerBouton();
+                  });
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Veuillez entrer une adresse email';
+                  } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                      .hasMatch(value)) {
+                    return 'Entrez une adresse email valide';
+                  } else {
+                    return null;
+                  }
+                },
               ),
               Padding(
                 padding: const EdgeInsets.all(2.5),
@@ -139,14 +178,29 @@ class PageInscription extends StatelessWidget {
                   border: OutlineInputBorder(),
                   labelText: 'Mot de passe',
                 ),
+                onChanged: (value) {
+                  setState(() {
+                    _activerBouton();
+                  });
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Veuillez entrer votre mot de passe';
+                  }
+                },
               ),
               Padding(
                 padding: const EdgeInsets.all(3.5),
               ),
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () {if (boutonConnexion) {
                     _inscription(context);
+                  }
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: boutonConnexion == false ? Colors.grey : Colors.green,
+                  ),
                   child: Text("Valider")),
               Padding(
                 padding: const EdgeInsets.all(3.5),

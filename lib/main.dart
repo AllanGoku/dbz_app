@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'PageAccueil.dart';
 import 'PageConnexion.dart';
 import 'PageInscription.dart';
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Dbz app',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),

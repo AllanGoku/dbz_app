@@ -3,9 +3,10 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-final String tableUser = 'user';
+final String tableUser = 'users';
 final String colonneMail = 'mail';
 final String colonnePassword = 'password';
+final String colonnePseudo = 'pseudo';
 
 final String databaseName = 'UserDB.db';
 final int databaseVersion = 1;
@@ -13,18 +14,21 @@ final int databaseVersion = 1;
 class User {
   String? mail;
   String? password;
+  String? pseudo;
 
-  User(this.mail, this.password);
+  User(this.mail, this.password, this.pseudo);
 
   User.fromMap(Map<dynamic, dynamic> map) {
     mail = map[colonneMail];
     password = map[colonnePassword];
+    pseudo = map[colonnePseudo];
   }
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       colonneMail: mail,
-      colonnePassword: password
+      colonnePassword: password,
+      colonnePseudo: pseudo
     };
     return map;
   }
@@ -58,6 +62,7 @@ class UserProvider {
           CREATE TABLE $tableUser (
             $colonneMail TEXT NOT NULL,
             $colonnePassword TEXT NOT NULL,
+            $colonnePseudo TEXT NOT NULL,
             PRIMARY KEY ($colonneMail)
           )
           ''');
@@ -75,7 +80,7 @@ class UserProvider {
   Future<User?> rechercheUserParMail(String mail) async {
     Database db = await instance.db;
     List<Map> maps = await db.query(tableUser,
-        columns: [colonneMail, colonnePassword],
+        columns: [colonneMail, colonnePassword, colonnePseudo],
         where: '$colonneMail = ?',
         whereArgs: [mail]);
     if (maps.length > 0) {
@@ -116,5 +121,11 @@ class UserProvider {
   Future close() async {
     Database db = await instance.db;
     db.close();
+  }
+
+  Future<void> printTableInfo() async {
+    final Database? db = await _db;
+    final List<Map<String, Object?>>? columns = await db?.rawQuery('PRAGMA table_info(users);');
+    print(columns);
   }
 }

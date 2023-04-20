@@ -39,7 +39,8 @@ class PageAccueil extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        _prefs.then((prefs) => prefs.remove('mailConnexion'));
+                        _prefs.then((prefs) => {prefs.remove('mailConnexion'),
+                          prefs.remove('pseudoConnexion')});
                         Navigator.pushReplacementNamed(context, '/');
                       },
                       child: Text('Oui'),
@@ -55,7 +56,7 @@ class PageAccueil extends StatelessWidget {
         child: Column(
           children: <Widget>[
             FutureBuilder<String?>(
-              future: SharedPreferences.getInstance().then((prefs) => prefs.getString('mailConnexion')),
+              future: SharedPreferences.getInstance().then((prefs) => prefs.getString('pseudoConnexion')),
               builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                 if (snapshot.hasData) {
                   return Text('Salut Super guerrier ${snapshot.data}');

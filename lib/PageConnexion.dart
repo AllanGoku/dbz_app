@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PageConnexion extends StatefulWidget {
   PageConnexion({super.key});
 
+
   @override
   _PageConnexionState createState() => _PageConnexionState();
 }
@@ -53,9 +54,11 @@ class _PageConnexionState extends State<PageConnexion> {
       recherche.then((users) {
         String? mail;
         String? password;
+        String? pseudo;
         if (users != null) {
           mail = users.mail;
           password = users.password;
+          pseudo = users.pseudo;
         }
         if (mail == null) {
           showDialog(
@@ -78,6 +81,7 @@ class _PageConnexionState extends State<PageConnexion> {
                       ElevatedButton(
                         onPressed: () {
                           prefs.setString("mailConnexion", mail!);
+                          prefs.setString("pseudoConnexion", pseudo!);
                           Navigator.pushNamed(context, '/accueil');
                         },
                         child: Text('OK'),
@@ -171,7 +175,7 @@ class _PageConnexionState extends State<PageConnexion> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: boutonConnexion == false ? Colors.grey : Colors.green,
+                    backgroundColor: boutonConnexion == false ? Colors.grey : Colors.deepOrange,
                   ),
                   child: Text("Se connecter")),
               Padding(

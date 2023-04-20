@@ -18,7 +18,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Dbz app',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.deepOrange,
+        appBarTheme: AppBarTheme(
+          color: Colors.orange[600],
+          iconTheme: IconThemeData(
+            color: Colors.blueAccent,
+          ),
+        ),
       ),
       initialRoute: '/',
       routes: {

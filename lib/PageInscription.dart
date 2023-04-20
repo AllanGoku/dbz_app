@@ -7,18 +7,18 @@ class PageInscription extends StatefulWidget {
 
   @override
   _PageInscriptionState createState() => _PageInscriptionState();
-
 }
+
 class _PageInscriptionState extends State<PageInscription> {
   TextEditingController _mail = TextEditingController();
   TextEditingController _password = TextEditingController();
+  TextEditingController _pseudo = TextEditingController();
   UserProvider? provider;
   bool boutonConnexion = false;
 
-
   void _activerBouton() {
     setState(() {
-      if (_mail.text == "" || _password.text == "") {
+      if (_mail.text == "" || _password.text == "" || _pseudo.text == "") {
         boutonConnexion = false;
       } else {
         if (RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_mail.text) ==
@@ -32,7 +32,7 @@ class _PageInscriptionState extends State<PageInscription> {
   }
 
   void _inscription(context) async {
-    if (_mail.text == "" && _password.text == "") {
+    if (_mail.text == "" && _password.text == "" && _pseudo.text == "") {
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -43,7 +43,7 @@ class _PageInscriptionState extends State<PageInscription> {
           });
     } else {
       provider = await UserProvider.instance;
-      User user = User(_mail.text, _password.text);
+      User user = User(_mail.text, _password.text, _pseudo.text);
       Future<User?> recherche = provider!.rechercheUserParMail(_mail.text);
       recherche.then((users) {
         String? mail;
@@ -101,12 +101,6 @@ class _PageInscriptionState extends State<PageInscription> {
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, "/");
-                        provider!.getAllUsers().then((users) {
-                          users.forEach((user) {
-                            print(user.mail);
-                            print(user.password);
-                          });
-                        });
                       },
                       child: Text('OK'),
                     ),
@@ -116,9 +110,7 @@ class _PageInscriptionState extends State<PageInscription> {
             );
           }
         }
-        // Utiliser la valeur de "mail" pour votre condition
       });
-      //recherche.then((value) => print(value?.mail));
     }
   }
 
@@ -193,13 +185,38 @@ class _PageInscriptionState extends State<PageInscription> {
               Padding(
                 padding: const EdgeInsets.all(3.5),
               ),
-              ElevatedButton(
-                  onPressed: () {if (boutonConnexion) {
-                    _inscription(context);
+              TextFormField(
+                maxLines: 1,
+                minLines: 1,
+                controller: _pseudo,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Pseudo',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _activerBouton();
+                  });
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Veuillez entrer votre pseudo';
                   }
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3.5),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    if (boutonConnexion) {
+                      _inscription(context);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: boutonConnexion == false ? Colors.grey : Colors.green,
+                    backgroundColor:
+                        boutonConnexion == false ? Colors.grey : Colors.green,
                   ),
                   child: Text("Valider")),
               Padding(

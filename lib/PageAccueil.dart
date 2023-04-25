@@ -15,7 +15,7 @@ class PageAccueil extends StatelessWidget {
     print(mailConnexion);
     return mailConnexion.toString();
   }
-  /*
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,46 +66,20 @@ class PageAccueil extends StatelessWidget {
                   return Text('Chargement en cours...');
                 }
               },
-            )
+            ),
+            Image.asset('images/goku.png')
+            /*
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.15,
+              child: Image.asset(
+                'images/goku.png',
+                height: MediaQuery.of(context).size.height * 0.6,
+              ),
+            ),
+             */
           ]
         ),
       )
-    );
-  }*/
-
-
-
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Accueil'),
-      ),
-      body: Center(
-        child: Stack(
-          children: [
-            Image.asset("goku.png"),
-            Positioned(
-              top: 80,
-              left: 30,
-              child: Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  'Bonjour, bienvenue sur mon application Dragon Ball Z !',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

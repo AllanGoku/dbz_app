@@ -49,7 +49,7 @@ class PageAccueil extends StatelessWidget {
                 );
               });
             },
-          )
+          ),
         ],
       ),
       body: Center(
@@ -67,7 +67,7 @@ class PageAccueil extends StatelessWidget {
                 }
               },
             ),
-            Image.asset('images/goku.png')
+            Image.asset('images/goku2.png')
             /*
             Positioned(
               top: MediaQuery.of(context).size.height * 0.15,
@@ -79,7 +79,7 @@ class PageAccueil extends StatelessWidget {
              */
           ]
         ),
-      )
+      ),
     );
   }
 }

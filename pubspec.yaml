@@ -67,8 +67,10 @@ flutter:
   assets:
     - images/goku.png
     - images/bulle_BD.png
-    - images/test.png
     - images/goku2.png
+    - images/background_dragon_ball.jpg
+    - images/icon_personnages.png
+    - images/icon_accueil.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

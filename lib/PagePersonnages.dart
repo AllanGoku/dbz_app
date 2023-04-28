@@ -1,3 +1,4 @@
+import 'package:dbz_app/monDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -58,6 +59,7 @@ class PagePersonnages extends StatelessWidget {
           ),
         ],
       ),
+      drawer: MonDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

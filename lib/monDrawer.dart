@@ -22,7 +22,20 @@ class MonDrawer extends StatelessWidget {
             child: null,
           ),
           ListTile(
-            leading: Image.asset("images/icone_personnages.jpg"),
+            leading: Image.asset('images/icon_accueil.png'),
+            title: Text(
+              'Accueil',
+              style: TextStyle(
+                fontSize: 24,
+              ),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/accueil');
+              // Mettre ici le code à exécuter quand l'utilisateur clique sur l'option "Accueil"
+            },
+          ),
+          ListTile(
+            leading: Image.asset("images/icon_personnages.png &&&"),
             title: Text(
               'Personnages',
               style: TextStyle(

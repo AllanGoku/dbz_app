@@ -1,3 +1,4 @@
+import 'package:dbz_app/PagePersonnages.dart';
 import 'package:flutter/material.dart';
 import 'PageAccueil.dart';
 import 'PageConnexion.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/': (context) =>  PageConnexion(),
         '/accueil': (context) => PageAccueil(),
         '/inscription': (context) => PageInscription(),
+        '/personnages': (context) => PagePersonnages(),
       },
     );
   }

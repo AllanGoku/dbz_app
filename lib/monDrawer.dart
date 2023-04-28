@@ -22,11 +22,12 @@ class MonDrawer extends StatelessWidget {
             child: null,
           ),
           ListTile(
-            leading: Image.asset('images/icon_accueil.png'),
+            leading: SizedBox(
+                width: 40, child: Image.asset('images/icon_accueil.png')),
             title: Text(
               'Accueil',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 22,
               ),
             ),
             onTap: () {
@@ -35,23 +36,17 @@ class MonDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Image.asset("images/icon_personnages.png &&&"),
+            leading: SizedBox(
+                width: 40, child: Image.asset("images/icon_personnages.png")),
             title: Text(
               'Personnages',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 22,
               ),
             ),
             onTap: () {
               Navigator.pushNamed(context, '/personnages');
               // Mettre ici le code à exécuter quand l'utilisateur clique sur l'option "Personnages"
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () {
-              // Mettre ici le code à exécuter quand l'utilisateur clique sur l'option "Settings"
             },
           ),
         ],

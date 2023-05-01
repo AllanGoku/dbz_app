@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.dbz">
+    package="com.example.dbz_app">
    <application
-        android:label="dbz"
+        android:label="dbz_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/goku">
         <activity
             android:name=".MainActivity"
             android:exported="true"

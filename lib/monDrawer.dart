@@ -49,6 +49,20 @@ class MonDrawer extends StatelessWidget {
               // Mettre ici le code à exécuter quand l'utilisateur clique sur l'option "Personnages"
             },
           ),
+          ListTile(
+            leading: SizedBox(
+                width: 40, child: Image.asset("images/icon_personnages.png")),
+            title: Text(
+              'Films',
+              style: TextStyle(
+                fontSize: 22,
+              ),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/films');
+              // Mettre ici le code à exécuter quand l'utilisateur clique sur l'option "films"
+            },
+          ),
         ],
       ),
     );

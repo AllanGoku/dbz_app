@@ -17,7 +17,7 @@ class PagePersonnages extends StatefulWidget {
 
 class _PagePersonnagesState extends State<PagePersonnages> {
 
-  Future<Map<String,dynamic>?> fetchJSONData(String personnage) async {
+  Future<Map<String,dynamic>?> obtenirInformationsPersonnage(String personnage) async {
     final response = await http.get(Uri.parse(
         'https://superheroapi.com/api/1549323725556590/search/$personnage'));
     if (response.statusCode == 200) {
@@ -35,6 +35,28 @@ class _PagePersonnagesState extends State<PagePersonnages> {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<String?> obtenirImagePersonnage(String personnage) async {
+    var info =  (await obtenirInformationsPersonnage(personnage));
+    var id = info!['results'][0]['id'];
+    final response = await http.get(Uri.parse(
+        'https://superheroapi.com/api/1549323725556590/$id/image'));
+    if (response.statusCode == 200) {
+      if (response.body ==
+          '{ "response": "error","error": "invalid id" }') {
+        print('Personnage non trouvé');
+        throw Exception('Personnage non trouvé');
+      } else {
+        print(
+            jsonDecode(response.body)["url"]);
+        return jsonDecode(response.body)["url"];
+      }
+    } else {
+      print('Failed to load data');
+      throw Exception('Failed to load data');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,12 +121,12 @@ class _PagePersonnagesState extends State<PagePersonnages> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  FutureBuilder<Map<String,dynamic>?>(
-                    future: fetchJSONData("goku"),
+                  FutureBuilder<String?>(
+                    future: obtenirImagePersonnage("goku"),
                     builder: (BuildContext context,
-                        AsyncSnapshot<Map<String,dynamic>?> snapshot) {
+                        AsyncSnapshot<String?> snapshot) {
                       if (snapshot.hasData) {
-                        return Image.network('${snapshot.data!['results'][0]['image']['url']}',
+                        return Image.network('${snapshot.data}',
                             height: cardHeight * 0.7);
                       } else if (snapshot.hasError) {
                         return Text(
@@ -128,7 +150,7 @@ class _PagePersonnagesState extends State<PagePersonnages> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: FutureBuilder<Map<String,dynamic>?>(
-                      future: fetchJSONData("goku"),
+                      future: obtenirInformationsPersonnage("goku"),
                       builder: (BuildContext context,
                           AsyncSnapshot<Map<String,dynamic>?> snapshot) {
                         if (snapshot.hasData) {

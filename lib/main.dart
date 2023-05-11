@@ -2,6 +2,7 @@ import 'package:dbz_app/PagePersonnages.dart';
 import 'package:flutter/material.dart';
 import 'PageAccueil.dart';
 import 'PageConnexion.dart';
+import 'PageFilms.dart';
 import 'PageInscription.dart';
 
 Future<void> main() async {
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/accueil': (context) => PageAccueil(),
         '/inscription': (context) => PageInscription(),
         '/personnages': (context) => PagePersonnages(),
+        '/films': (context) => PageFilms(),
       },
     );
   }

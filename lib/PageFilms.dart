@@ -68,9 +68,9 @@ class _PageFilmsState extends State<PageFilms> {
   String recupTitreAlternatif(int index) {
     String titreAlternatif = '';
     if (_films![index]!['alternativeTitles'] != null) {
-
-      List<dynamic> listTitresAlternatifes = (_films![index]!['alternativeTitles']) as List<dynamic>;
-      int indice = listTitresAlternatifes.length-1;
+      List<dynamic> listTitresAlternatifes =
+          (_films![index]!['alternativeTitles']) as List<dynamic>;
+      int indice = listTitresAlternatifes.length - 1;
       titreAlternatif = _films![index]!['alternativeTitles'][indice];
     }
     return titreAlternatif;
@@ -107,9 +107,12 @@ class _PageFilmsState extends State<PageFilms> {
                             decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5), // couleur de l'ombre
-                                  spreadRadius: 5, // rayon d'expansion de l'ombre
-                                  blurRadius: 0, // rayon de flou de l'ombre
+                                  color: Colors.grey.withOpacity(0.5),
+                                  // couleur de l'ombre
+                                  spreadRadius: 5,
+                                  // rayon d'expansion de l'ombre
+                                  blurRadius: 0,
+                                  // rayon de flou de l'ombre
                                   offset: Offset(0, 3), // décalage de l'ombre
                                 ),
                               ],
@@ -125,14 +128,16 @@ class _PageFilmsState extends State<PageFilms> {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 16.0),
                                     alignment: Alignment.centerLeft,
-                                    child:
-                                    Row(
+                                    child: Row(
                                       children: [
-                                        Image.network(_films![index]!['image'],),
-                                    Padding(padding:
-                                    EdgeInsets.only(right: 10)),
-                                    Expanded(
-                                        child: Text(
+                                        Image.network(
+                                          _films![index]!['image'],
+                                        ),
+                                        Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 10)),
+                                        Expanded(
+                                            child: Text(
                                           recupTitreAlternatif(index),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -140,8 +145,9 @@ class _PageFilmsState extends State<PageFilms> {
                                           ),
                                           maxLines: 3,
                                         )),
-                                        Padding(padding:
-                                        EdgeInsets.only(right: 10)),
+                                        Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 10)),
                                         Icon(
                                           _isExpandedList[index]
                                               ? Icons.keyboard_arrow_up

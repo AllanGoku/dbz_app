@@ -1,3 +1,4 @@
+import 'package:dbz_app/monAppBar.dart';
 import 'package:dbz_app/monDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,7 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 bool showText = false;
-Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
 
 class PagePersonnages extends StatefulWidget {
   PagePersonnages({super.key});
@@ -63,54 +64,7 @@ class _PagePersonnagesState extends State<PagePersonnages> {
     final height = MediaQuery.of(context).size.height;
     final cardHeight = height * 0.4;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Page d'accueil"),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Déconnexion'),
-                        content: Text('Voulez-vous vous déconnecter ?'),
-                        actions: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('Non'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              _prefs.then((prefs) => {
-                                    prefs.remove('mailConnexion'),
-                                    prefs.remove('pseudoConnexion')
-                                  });
-                              Navigator.pushReplacementNamed(context, '/');
-                            },
-                            child: Text('Oui'),
-                          ),
-                        ],
-                      );
-                    });
-              },
-            ),
-          ],
-        ),
+        appBar: MonAppBar(),
         drawer: MonDrawer(),
         body: GridView.count(
           crossAxisCount: 1,

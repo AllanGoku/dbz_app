@@ -65,6 +65,17 @@ class _PageFilmsState extends State<PageFilms> {
     });
   }
 
+  String recupTitreAlternatif(int index) {
+    String titreAlternatif = '';
+    if (_films![index]!['alternativeTitles'] != null) {
+
+      List<dynamic> listTitresAlternatifes = (_films![index]!['alternativeTitles']) as List<dynamic>;
+      int indice = listTitresAlternatifes.length-1;
+      titreAlternatif = _films![index]!['alternativeTitles'][indice];
+    }
+    return titreAlternatif;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +90,12 @@ class _PageFilmsState extends State<PageFilms> {
               )
             : ListView.builder(
                 itemCount: _films?.length,
+                padding: EdgeInsets.only(
+                  top: 8.0,
+                  bottom: 8.0,
+                  left: 8.0,
+                  right: 8.0,
+                ),
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -87,6 +104,16 @@ class _PageFilmsState extends State<PageFilms> {
                             _toggleExpanded(index);
                           },
                           child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5), // couleur de l'ombre
+                                  spreadRadius: 5, // rayon d'expansion de l'ombre
+                                  blurRadius: 0, // rayon de flou de l'ombre
+                                  offset: Offset(0, 3), // décalage de l'ombre
+                                ),
+                              ],
+                            ),
                             child: Column(
                               children: <Widget>[
                                 InkWell(
@@ -94,16 +121,33 @@ class _PageFilmsState extends State<PageFilms> {
                                     _toggleExpanded(index);
                                   },
                                   child: Container(
-                                    height: 50,
+                                    height: 80,
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 16.0),
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      _films![index]!['title'],
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                      ),
+                                    child:
+                                    Row(
+                                      children: [
+                                        Image.network(_films![index]!['image'],),
+                                    Padding(padding:
+                                    EdgeInsets.only(right: 10)),
+                                    Expanded(
+                                        child: Text(
+                                          recupTitreAlternatif(index),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18.0,
+                                          ),
+                                          maxLines: 3,
+                                        )),
+                                        Padding(padding:
+                                        EdgeInsets.only(right: 10)),
+                                        Icon(
+                                          _isExpandedList[index]
+                                              ? Icons.keyboard_arrow_up
+                                              : Icons.keyboard_arrow_down,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -122,12 +166,6 @@ class _PageFilmsState extends State<PageFilms> {
                                     ]),
                                   ),
                               ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 2,
-                              ),
                             ),
                           )));
                 },

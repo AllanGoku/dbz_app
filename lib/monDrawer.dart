@@ -21,11 +21,12 @@ class MonDrawer extends StatelessWidget {
             ),
             child: null,
           ),
+          Padding(padding: EdgeInsets.only(top: 10)),
           ListTile(
             leading: SizedBox(
-                width: 40, child: Image.asset('images/icon_accueil.png')),
+                width: 60, child: Image.asset('images/icon_accueil.png')),
             title: Text(
-              'Accueil',
+              ' Accueil',
               style: TextStyle(
                 fontSize: 22,
               ),
@@ -35,9 +36,10 @@ class MonDrawer extends StatelessWidget {
               // Mettre ici le code à exécuter quand l'utilisateur clique sur l'option "Accueil"
             },
           ),
+          Padding(padding: EdgeInsets.only(top: 15)),
           ListTile(
             leading: SizedBox(
-                width: 40, child: Image.asset("images/icon_personnages.png")),
+                width: 65, child: Image.asset("images/icon_personnages.png")),
             title: Text(
               'Personnages',
               style: TextStyle(
@@ -49,9 +51,10 @@ class MonDrawer extends StatelessWidget {
               // Mettre ici le code à exécuter quand l'utilisateur clique sur l'option "Personnages"
             },
           ),
+          Padding(padding: EdgeInsets.only(top: 20)),
           ListTile(
             leading: SizedBox(
-                width: 40, child: Image.asset("images/icon_personnages.png")),
+                width: 65, child: Image.asset("images/icon_films.png")),
             title: Text(
               'Films',
               style: TextStyle(

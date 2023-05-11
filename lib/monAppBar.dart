@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MonAppBar extends StatelessWidget implements PreferredSizeWidget{
-  const MonAppBar({Key? key}) : super(key: key);
+
+  const MonAppBar({required this.titre});
+
+  final String titre;
+
 
 
 
@@ -11,7 +15,7 @@ class MonAppBar extends StatelessWidget implements PreferredSizeWidget{
   Widget build(BuildContext context) {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     return AppBar(
-      title: Text("Page d'accueil"),
+      title: Text(titre),
       leading: Builder(
         builder: (BuildContext context) {
           return IconButton(

@@ -1,7 +1,6 @@
 import 'package:dbz_app/monAppBar.dart';
 import 'package:dbz_app/monDrawer.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -64,7 +63,7 @@ class _PagePersonnagesState extends State<PagePersonnages> {
     final height = MediaQuery.of(context).size.height;
     final cardHeight = height * 0.4;
     return Scaffold(
-        appBar: MonAppBar(),
+        appBar: MonAppBar(titre: "Personnages"),
         drawer: MonDrawer(),
         body: GridView.count(
           crossAxisCount: 1,

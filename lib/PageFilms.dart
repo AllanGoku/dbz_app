@@ -42,15 +42,6 @@ class _PageFilmsState extends State<PageFilms> {
     }
   }
 
-  List<String>? obtenirTitresDesFilms() {
-    List<String> result = [];
-    _films!.forEach((key, value) {
-      print(value['title']);
-      result.add(value['title']);
-    });
-    return result;
-  }
-
   void initState() {
     super.initState();
     obtenirFilms().then((data) {
@@ -58,8 +49,6 @@ class _PageFilmsState extends State<PageFilms> {
         _films = data;
       });
     });
-    //print(_films);
-    //_titres = obtenirTitresDesFilms();
   }
 
   List<bool> _isExpandedList = List.generate(15, (index) => false);
@@ -79,10 +68,15 @@ class _PageFilmsState extends State<PageFilms> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:MonAppBar(),
+        appBar: MonAppBar(titre: "Films"),
         drawer: MonDrawer(),
         body: _films == null
-            ? const CircularProgressIndicator()
+            ? Column(
+                children: [
+                  Text('Chargement des films...'),
+                  CircularProgressIndicator(),
+                ],
+              )
             : ListView.builder(
                 itemCount: _films?.length,
                 itemBuilder: (BuildContext context, int index) {

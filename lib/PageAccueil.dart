@@ -20,7 +20,7 @@ class PageAccueil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MonAppBar(),
+      appBar: MonAppBar(titre: "Accueil"),
       drawer: MonDrawer(),
       body: Center(
         child: Column(

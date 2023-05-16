@@ -82,12 +82,13 @@ class _PageFilmsState extends State<PageFilms> {
         appBar: MonAppBar(titre: "Films"),
         drawer: MonDrawer(),
         body: _films == null
-            ? Column(
-                children: [
-                  Text('Chargement des films...'),
-                  CircularProgressIndicator(),
-                ],
-              )
+            ? Center(
+            child: Column(
+              children: [
+                Text('Chargement des films ...'),
+                CircularProgressIndicator(),
+              ],
+            ))
             : ListView.builder(
                 itemCount: _films?.length,
                 padding: EdgeInsets.only(

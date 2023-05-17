@@ -1,6 +1,7 @@
 import 'package:dbz_app/monAppBar.dart';
 import 'package:dbz_app/monDrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -17,46 +18,31 @@ class PagePersonnages extends StatefulWidget {
 class _PagePersonnagesState extends State<PagePersonnages> {
   Future<Map<String, dynamic>?> obtenirInformationsPersonnage(
       String personnage) async {
-    final response = await http.get(Uri.parse(
-        'https://superheroapi.com/api/1549323725556590/search/$personnage'));
-    if (response.statusCode == 200) {
-      if (response.body ==
-          '{"response":"error","error":"character with given name not found"}') {
-        print('Personnage non trouvé');
-        throw Exception('Personnage non trouvé');
+    if (personnage == "Vegeta" || personnage == "Goku") {
+      final response = await http.get(Uri.parse(
+          'https://superheroapi.com/api/1549323725556590/search/$personnage'));
+      if (response.statusCode == 200) {
+        if (jsonDecode(response.body)["response"] == "error") {
+          print('Personnage non trouvé');
+          throw Exception('Personnage non trouvé');
+        } else {
+          return jsonDecode(response.body);
+        }
       } else {
-        print(
-            jsonDecode(response.body)['results'][0]['biography']['full-name']);
-        return jsonDecode(response.body);
+        print('Failed to load data');
+        throw Exception('Failed to load data');
       }
-    } else {
-      print('Failed to load data');
-      throw Exception('Failed to load data');
+    } else{
+      if (personnage == "Gohan"){
+        final jsonString = await rootBundle.loadString('assets/personnagesDragonBall.json');
+        return jsonDecode(jsonString)["data"][0];
+      }
+      if (personnage == "Piccolo"){
+        final jsonString = await rootBundle.loadString('assets/personnagesDragonBall.json');
+        return jsonDecode(jsonString)["data"][1];
+      }
     }
   }
-
-  Future<String?> obtenirImagePersonnage(String personnage) async {
-    var info = (await obtenirInformationsPersonnage(personnage));
-    var id = info!['results'][0]['id'];
-    final response = await http.get(
-        Uri.parse('https://superheroapi.com/api/1549323725556590/$id/image'));
-    if (response.statusCode == 200) {
-      if (response.body == '{ "response": "error","error": "invalid id" }') {
-        print('Personnage non trouvé');
-        throw Exception('Personnage non trouvé');
-      } else {
-        print(jsonDecode(response.body)["url"]);
-        return jsonDecode(response.body)["url"];
-      }
-    } else {
-      print('Failed to load data');
-      throw Exception('Failed to load data');
-    }
-  }
-
-  List<String> listPersonnages = ["Goku", "Vegeta"];
-
-  List<dynamic> _personnages = [];
 
   void initState() {
     super.initState();
@@ -69,6 +55,10 @@ class _PagePersonnagesState extends State<PagePersonnages> {
     }
   }
 
+  List<String> listPersonnages = ["Goku", "Vegeta","Gohan","Piccolo"];
+
+  List<dynamic> _personnages = [];
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -76,13 +66,16 @@ class _PagePersonnagesState extends State<PagePersonnages> {
     return Scaffold(
         appBar: MonAppBar(titre: "Personnages"),
         drawer: MonDrawer(),
-        body: _personnages == null
+        body: _personnages == null &&
+                _personnages.length < listPersonnages.length
             ? Center(
                 child: Column(
                 children: [
                   Text('Chargement des personnages...'),
                   CircularProgressIndicator(),
                 ],
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
               ))
             : GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -107,10 +100,52 @@ class _PagePersonnagesState extends State<PagePersonnages> {
                           ),
                         ),
                         Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Row(children: [
+                              Text(
+                                "Nom complet : ",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                              Text(
+                                _personnages[index]['results'][0]['biography']
+                                    ['full-name'],
+                              ),
+                            ])),
+                        Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            _personnages[index]['results'][0]['biography']
-                                ['full-name'],
+                          child: Row(
+                            children: [
+                              Text(
+                                "Alias : ",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                              Text(
+                                _personnages[index]['results'][0]['biography']
+                                    ['aliases'][0],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Race : ",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                              Text(
+                                _personnages[index]['results'][0]['appearance']
+                                ['race'],
+                              ),
+                            ],
                           ),
                         ),
                       ],

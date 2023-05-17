@@ -88,6 +88,8 @@ class _PageFilmsState extends State<PageFilms> {
                 Text('Chargement des films ...'),
                 CircularProgressIndicator(),
               ],
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
             ))
             : ListView.builder(
                 itemCount: _films?.length,

@@ -65,13 +65,13 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - images/bulle_BD.png
-    - images/goku2.png
-    - images/background_dragon_ball.jpg
-    - images/icon_personnages.png
-    - images/icon_accueil.png
-    - images/icon_films.png
+  assets :
+    - assets/images/goku2.png
+    - assets/images/background_dragon_ball.jpg
+    - assets/images/icon_personnages.png
+    - assets/images/icon_accueil.png
+    - assets/images/icon_films.png
+    - assets/personnagesDragonBall.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

@@ -37,7 +37,7 @@ class PageAccueil extends StatelessWidget {
                 }
               },
             ),
-            Image.asset('images/goku2.png')
+            Image.asset('assets/images/goku2.png')
             /*
             Positioned(
               top: MediaQuery.of(context).size.height * 0.15,

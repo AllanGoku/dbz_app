@@ -14,7 +14,7 @@ class MonDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.orange[600],
               image: DecorationImage(
-                image: AssetImage('images/background_dragon_ball.jpg'),
+                image: AssetImage('assets/images/background_dragon_ball.jpg'),
                 fit: BoxFit.cover,
                 alignment: Alignment.centerRight,
               ),
@@ -24,7 +24,7 @@ class MonDrawer extends StatelessWidget {
           Padding(padding: EdgeInsets.only(top: 10)),
           ListTile(
             leading: SizedBox(
-                width: 60, child: Image.asset('images/icon_accueil.png')),
+                width: 60, child: Image.asset('assets/images/icon_accueil.png')),
             title: Text(
               ' Accueil',
               style: TextStyle(
@@ -39,7 +39,7 @@ class MonDrawer extends StatelessWidget {
           Padding(padding: EdgeInsets.only(top: 15)),
           ListTile(
             leading: SizedBox(
-                width: 65, child: Image.asset("images/icon_personnages.png")),
+                width: 65, child: Image.asset("assets/images/icon_personnages.png")),
             title: Text(
               'Personnages',
               style: TextStyle(
@@ -54,7 +54,7 @@ class MonDrawer extends StatelessWidget {
           Padding(padding: EdgeInsets.only(top: 20)),
           ListTile(
             leading: SizedBox(
-                width: 65, child: Image.asset("images/icon_films.png")),
+                width: 65, child: Image.asset("assets/images/icon_films.png")),
             title: Text(
               'Films',
               style: TextStyle(

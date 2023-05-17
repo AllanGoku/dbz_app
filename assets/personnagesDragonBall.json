@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "results": [
+        {
+          "name": "Gohan",
+          "biography": {
+            "full-name": "Son-Gohan",
+            "aliases": [
+              "Great Saïyaman"
+            ]
+          },
+          "appearance": {
+            "gender": "Male",
+            "race": "Mi-Terrien mi-Saiyan"
+          },
+          "image": {
+            "url": "https://static.wikia.nocookie.net/dragonball/images/e/e9/Ultimate_Son_Gohan_%28Super_Hero%29_%28Artwork%29_02.png/revision/latest?cb=20220308160944&path-prefix=fr"
+          }
+        }
+      ]
+    },
+    {
+      "results": [
+        {
+          "name": "Piccolo",
+          "biography": {
+            "full-name": "Piccolo",
+            "aliases": [
+              "Petit-Cœur"
+            ]
+          },
+          "appearance": {
+            "gender": "Male",
+            "race": "Namek"
+          },
+          "image": {
+            "url": "https://static.wikia.nocookie.net/dragonball/images/f/f1/Piccolo_%28Super_Hero%29_%28Artwork%29_02.png/revision/latest?cb=20220308160751&path-prefix=fr"
+          }
+        }
+      ]
+    }
+  ]
+}

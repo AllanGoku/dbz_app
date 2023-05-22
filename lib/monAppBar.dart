@@ -49,7 +49,8 @@ class MonAppBar extends StatelessWidget implements PreferredSizeWidget{
                         onPressed: () {
                           _prefs.then((prefs) => {
                             prefs.remove('mailConnexion'),
-                            prefs.remove('pseudoConnexion')
+                            prefs.remove('pseudoConnexion'),
+                            prefs.remove('connectionActive')
                           });
                           Navigator.pushReplacementNamed(context, '/');
                         },

@@ -17,9 +17,21 @@ class _PageConnexionState extends State<PageConnexion> {
   UserProvider? provider;
   User? userRecup;
   bool boutonConnexion = false;
+  bool resterConnecte = false;
 
   void initState() {
     super.initState();
+    dejaConnecte();
+  }
+
+  Future<void> dejaConnecte() async {
+    final SharedPreferences prefs = await _prefs;
+    String? mail = prefs.getString("mailConnexion");
+    String? pseudo = prefs.getString("pseudoConnexion");
+    bool? connectionActive = prefs.getBool("connectionActive");
+    if(mail != null && pseudo != null && connectionActive == true){
+      Navigator.pushNamed(context, '/accueil');
+    }
   }
 
   void _activerBouton() {
@@ -82,6 +94,11 @@ class _PageConnexionState extends State<PageConnexion> {
                         onPressed: () {
                           prefs.setString("mailConnexion", mail!);
                           prefs.setString("pseudoConnexion", pseudo!);
+                          if (resterConnecte == true) {
+                            prefs.setBool("connectionActive", true);
+                          } else {
+                            prefs.setBool("connectionActive", false);
+                          }
                           Navigator.pushNamed(context, '/accueil');
                         },
                         child: Text('OK'),
@@ -165,6 +182,22 @@ class _PageConnexionState extends State<PageConnexion> {
                   }
                 },
               ),
+              Row(
+                children: [
+                  Checkbox(
+                      activeColor: Colors.deepOrange,
+                      value: resterConnecte,
+                      onChanged: (value) {
+                        setState(() {
+                          resterConnecte = !resterConnecte;
+                        });
+                      }
+                  ),
+                  Text("Rester connecté"),
+                ],
+              )
+
+              ,
               Padding(
                 padding: const EdgeInsets.all(3.5),
               ),

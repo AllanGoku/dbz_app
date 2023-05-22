@@ -3,7 +3,7 @@
    <application
         android:label="dbz_app"
         android:name="${applicationName}"
-        android:icon="@drawable/goku">
+        android:icon="@drawable/icon_app">
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -26,9 +26,13 @@ class _PageFilmsState extends State<PageFilms> {
 
   Future<Map<int, dynamic>?> obtenirFilms() async {
     await getInstance();
+
+    //Vérification si la table film existe
     bool? tableExist = await provider?.isTableExists();
     print(tableExist);
 
+
+    //Si elle existe, on récupère les films de la base de données
     if (tableExist == true) {
       List<Film> filmsObtenu = await provider!.getAllFilms();
       final films = <int, dynamic>{};
@@ -38,7 +42,9 @@ class _PageFilmsState extends State<PageFilms> {
       }
       print("existes");
       return films;
-    } else {
+    }
+    //Si elle n'existe pas, on crée la table et on récupère les films de l'API
+    else {
       print("n'existe pas");
       setState(() {
         createTable = true;
@@ -85,6 +91,7 @@ class _PageFilmsState extends State<PageFilms> {
 
   List<bool> _isExpandedList = List.generate(15, (index) => false);
 
+  //Fonction pour afficher ou cacher le synopsis
   void _toggleExpanded(int index) {
     setState(() {
       _isExpandedList[index] = !_isExpandedList[index];
@@ -97,11 +104,16 @@ class _PageFilmsState extends State<PageFilms> {
     });
   }
 
+  //Fonction pour récupérer le titre alternatif
   Future<String> recupTitreAlternatif(int index) async {
     String titreAlternatif = '';
+    //Si la table existe, on récupère le titre alternatif de la base de données
     if (createTable == false) {
       titreAlternatif = _films![index]!['alternativeTitles'];
-    } else {
+    }
+    //Si la table n'existe pas, on récupère le titre alternatif de l'API
+    else {
+      //Comme il y a plusieurs titre alternatif, on récupère le dernier qui correspond au titre français
       if (_films![index]!['alternativeTitles'] != null) {
         List<dynamic> listTitresAlternatifes =
         (_films![index]!['alternativeTitles']);

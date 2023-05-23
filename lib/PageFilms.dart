@@ -1,3 +1,4 @@
+import 'package:dbz_app/Films.dart';
 import 'package:dbz_app/monAppBar.dart';
 import 'package:dbz_app/monDrawer.dart';
 import 'package:flutter/material.dart';
@@ -16,29 +17,60 @@ class PageFilms extends StatefulWidget {
 
 class _PageFilmsState extends State<PageFilms> {
   Map<int, dynamic>? _films;
+  FilmProvider? provider;
 
-  Future<Map<int, dynamic>> obtenirFilms() async {
-    final response = await http.get(
-        Uri.parse(
-            'https://anime-db.p.rapidapi.com/anime?page=1&size=15&search=Dragon%20ball%20z&sortBy=title&sortOrder=asc&types=Movie'),
-        headers: {
-          'X-Rapidapi-Key':
-              'a4927f5b41msh452a6972b3b2e8ap136099jsn3cdae7586830',
-          'X-Rapidapi-Host': 'anime-db.p.rapidapi.com'
-        });
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+  Future<FilmProvider> getInstance() async =>
+      provider = await FilmProvider.instance;
+
+  bool createTable = false;
+
+  Future<Map<int, dynamic>?> obtenirFilms() async {
+    await getInstance();
+    bool? tableExist = await provider?.isTableExists();
+    print(tableExist);
+
+    if (tableExist == true) {
+      List<Film> filmsObtenu = await provider!.getAllFilms();
       final films = <int, dynamic>{};
-
-      for (int i = 0; i < data['data'].length; i++) {
-        final film = data['data'][i];
-        films[i] = film;
+      for (int i = 0; i < filmsObtenu.length; i++) {
+        var film = filmsObtenu[i];
+        films[i] = film.toMap();
       }
-      print(films);
+      print("existes");
       return films;
     } else {
-      print('Failed to load data');
-      throw Exception('Failed to load data');
+      print("n'existe pas");
+      setState(() {
+        createTable = true;
+      });
+
+      final response = await http.get(
+          Uri.parse(
+              'https://anime-db.p.rapidapi.com/anime?page=1&size=15&search=Dragon%20ball%20z&sortBy=title&sortOrder=asc&types=Movie'),
+          headers: {
+            'X-Rapidapi-Key':
+            'a4927f5b41msh452a6972b3b2e8ap136099jsn3cdae7586830',
+            'X-Rapidapi-Host': 'anime-db.p.rapidapi.com'
+          });
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final films = <int, dynamic>{};
+
+        for (int i = 0; i < data['data'].length; i++) {
+          final film = data['data'][i];
+          films[i] = film;
+          List<dynamic> listTitresAlternatifes = film['alternativeTitles'];
+          String titreAlternatif =
+          listTitresAlternatifes[listTitresAlternatifes.length - 1];
+          Film objetFilm =
+          Film(titreAlternatif, film['synopsis'], film['image']);
+          provider?.insert(objetFilm);
+        }
+        return films;
+      } else {
+        print('Failed to load data');
+        throw Exception('Failed to load data');
+      }
     }
   }
 
@@ -65,13 +97,18 @@ class _PageFilmsState extends State<PageFilms> {
     });
   }
 
-  String recupTitreAlternatif(int index) {
+  Future<String> recupTitreAlternatif(int index) async {
     String titreAlternatif = '';
-    if (_films![index]!['alternativeTitles'] != null) {
-      List<dynamic> listTitresAlternatifes =
-          (_films![index]!['alternativeTitles']) as List<dynamic>;
-      int indice = listTitresAlternatifes.length - 1;
-      titreAlternatif = _films![index]!['alternativeTitles'][indice];
+    if (createTable == false) {
+      titreAlternatif = _films![index]!['alternativeTitles'];
+    } else {
+      if (_films![index]!['alternativeTitles'] != null) {
+        List<dynamic> listTitresAlternatifes =
+        (_films![index]!['alternativeTitles']);
+        int indice = listTitresAlternatifes.length - 1;
+        titreAlternatif = _films![index]!['alternativeTitles'][indice];
+
+      }
     }
     return titreAlternatif;
   }
@@ -92,92 +129,104 @@ class _PageFilmsState extends State<PageFilms> {
               crossAxisAlignment: CrossAxisAlignment.center,
             ))
             : ListView.builder(
-                itemCount: _films?.length,
-                padding: EdgeInsets.only(
-                  top: 8.0,
-                  bottom: 8.0,
-                  left: 8.0,
-                  right: 8.0,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: InkWell(
-                          onTap: () {
-                            _toggleExpanded(index);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  // couleur de l'ombre
-                                  spreadRadius: 5,
-                                  // rayon d'expansion de l'ombre
-                                  blurRadius: 0,
-                                  // rayon de flou de l'ombre
-                                  offset: Offset(0, 3), // décalage de l'ombre
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                InkWell(
-                                  onTap: () {
-                                    _toggleExpanded(index);
-                                  },
-                                  child: Container(
-                                    height: 80,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 16.0),
-                                    alignment: Alignment.centerLeft,
-                                    child: Row(
-                                      children: [
-                                        Image.network(
-                                          _films![index]!['image'],
-                                        ),
-                                        Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 10)),
-                                        Expanded(
-                                            child: Text(
-                                          recupTitreAlternatif(index),
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18.0,
-                                          ),
-                                          maxLines: 3,
-                                        )),
-                                        Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 10)),
-                                        Icon(
-                                          _isExpandedList[index]
-                                              ? Icons.keyboard_arrow_up
-                                              : Icons.keyboard_arrow_down,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                if (_isExpandedList[index])
-                                  Container(
-                                    child: Column(children: [
-                                      Text(
-                                        'Description : ', //${_items[index]}
+          itemCount: _films?.length,
+          padding: EdgeInsets.only(
+            top: 8.0,
+            bottom: 8.0,
+            left: 8.0,
+            right: 8.0,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: InkWell(
+                    onTap: () {
+                      _toggleExpanded(index);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            // couleur de l'ombre
+                            spreadRadius: 5,
+                            // rayon d'expansion de l'ombre
+                            blurRadius: 0,
+                            // rayon de flou de l'ombre
+                            offset: Offset(0, 3), // décalage de l'ombre
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              _toggleExpanded(index);
+                            },
+                            child: Container(
+                              height: 80,
+                              padding:
+                              EdgeInsets.symmetric(horizontal: 16.0),
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                              Image.network(
+                              _films![index]!['image'],
+                              ),
+                              Padding(
+                                  padding:
+                                  EdgeInsets.only(right: 10)),
+                              Expanded(
+                                child: FutureBuilder<String?>(
+                                  future: recupTitreAlternatif(index),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<String?> snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text('${snapshot.data}',
                                         style: TextStyle(
-                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0,
                                         ),
-                                      ),
-                                      Text(
-                                        '${_films![index]!['synopsis']}',
-                                      ),
-                                    ]),
-                                  ),
+                                        maxLines: 3,);
+                                    } else if (snapshot.hasError) {
+                                      return Text(
+                                          'Une erreur est survenue : ${snapshot
+                                              .error}');
+                                    } else {
+                                      return Text('Chargement en cours...');
+                                    }
+                                  },
+                                )),
+                                Padding(
+                                    padding:
+                                    EdgeInsets.only(right: 10)),
+                                Icon(
+                                  _isExpandedList[index]
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down,
+                                ),
                               ],
+                              ),
                             ),
-                          )));
-                },
-              ) /**/);
+                          ),
+                          if (_isExpandedList[index])
+                            Container(
+                              child: Column(children: [
+                                Text(
+                                  'Description : ', //${_items[index]}
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                Text(
+                                  '${_films![index]!['synopsis']}',
+                                ),
+                              ]),
+                            ),
+                        ],
+                      ),
+                    )));
+          },
+        ) /**/);
   }
 }

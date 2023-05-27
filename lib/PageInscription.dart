@@ -16,6 +16,7 @@ class _PageInscriptionState extends State<PageInscription> {
   UserProvider? provider;
   bool boutonConnexion = false;
 
+  // Fonction permettant de vérifier si les champs sont remplis et si le mail est valide, si oui, le bouton de connexion est activé
   void _activerBouton() {
     setState(() {
       if (_mail.text == "" || _password.text == "" || _pseudo.text == "") {
@@ -31,6 +32,7 @@ class _PageInscriptionState extends State<PageInscription> {
     });
   }
 
+  // Fonction qui vérifie que tout les champs sont valides et qui vérifie que l'adresse mail n'est pas déjà utilisée
   void _inscription(context) async {
     if (_mail.text == "" && _password.text == "" && _pseudo.text == "") {
       showDialog(

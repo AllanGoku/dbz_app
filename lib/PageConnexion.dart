@@ -24,6 +24,7 @@ class _PageConnexionState extends State<PageConnexion> {
     dejaConnecte();
   }
 
+  // Fonction vérifiant si l'utilisateur est déjà connecté (si lors de la connexion précédente, il a coché la case "rester connecté")
   Future<void> dejaConnecte() async {
     final SharedPreferences prefs = await _prefs;
     String? mail = prefs.getString("mailConnexion");
@@ -34,6 +35,7 @@ class _PageConnexionState extends State<PageConnexion> {
     }
   }
 
+  // Fonction permettant de vérifier si les champs sont remplis et si le mail est valide, si oui, le bouton de connexion est activé
   void _activerBouton() {
     setState(() {
       if (_mail.text == "" || _password.text == "") {
@@ -49,6 +51,7 @@ class _PageConnexionState extends State<PageConnexion> {
     });
   }
 
+  // Fonction qui vérifie que tout les champs sont valides et qui vérifie que l'adresse mail existe et que le mot de passe associé correspond à celui entré
   Future<void> _connexion(context) async {
     if (_mail.text == "" && _password.text == "") {
       showDialog(

@@ -16,8 +16,11 @@ class PagePersonnages extends StatefulWidget {
 }
 
 class _PagePersonnagesState extends State<PagePersonnages> {
+
+  // Fonction permettant d'obtenur les informations des personnages soit par l'api superheroapi, pour Goku et Vegeta, et pour les autres avec un fichier json
   Future<Map<String, dynamic>?> obtenirInformationsPersonnage(
       String personnage) async {
+    //Si les informations à obtenir sont pour Goku ou Vegeta, on les recherches dans l'api superheroapi car il n'y a que eux de l'univers Dragon Ball
     if (personnage == "Vegeta" || personnage == "Goku") {
       final response = await http.get(Uri.parse(
           'https://superheroapi.com/api/1549323725556590/search/$personnage'));
@@ -32,6 +35,7 @@ class _PagePersonnagesState extends State<PagePersonnages> {
         print('Failed to load data');
         throw Exception('Failed to load data');
       }
+      // Sinon on les recherches dans le fichier json, sachant qu'il n'y a que deux personnages de l'univers Dragon Ball : Gohan et Piccolo
     } else{
       if (personnage == "Gohan"){
         final jsonString = await rootBundle.loadString('assets/personnagesDragonBall.json');

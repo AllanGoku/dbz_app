@@ -7,16 +7,6 @@ class PageAccueil extends StatelessWidget {
   PageAccueil({super.key});
   // This widget is the root of your application.
 
-  Future<String?> recupMail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("mailConnexion");
-  }
-  Future<String> printMailConnexion() async {
-    String? mailConnexion = await recupMail();
-    print(mailConnexion);
-    return mailConnexion.toString();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,15 +28,6 @@ class PageAccueil extends StatelessWidget {
               },
             ),
             Image.asset('assets/images/goku2.png')
-            /*
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.15,
-              child: Image.asset(
-                'images/goku.png',
-                height: MediaQuery.of(context).size.height * 0.6,
-              ),
-            ),
-             */
           ]
         ),
       ),

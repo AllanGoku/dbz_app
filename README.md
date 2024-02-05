@@ -6,6 +6,7 @@ C'est une application Dart qui utilise une base de données SQLite pour stocker 
 
 ## Caractéristiques
 
+- Connexion utilisateur avec option pour rester connecté
 - Affiche une liste de personnages de DBZ
 - Récupère les informations des personnages à partir d'une API externe ("superheorapi.com") et d'un fichier JSON local
 - Affiche les détails des personnages dans une vue de grille
@@ -20,6 +21,7 @@ C'est une application Dart qui utilise une base de données SQLite pour stocker 
 - http package pour les requêtes API
 - sqflite package pour la gestion de la base de données SQLite
 - path_provider package pour trouver le chemin du répertoire de l'application
+- SharedPreferences pour la gestion des sessions utilisateur
 
 ## Comment exécuter le projet
 
